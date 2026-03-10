@@ -16,6 +16,13 @@ func main() {
 			panic(err)
 		}
 		command := strings.TrimSpace(line)
-		fmt.Printf("%s: command not found\n", command)
+
+		switch command {
+		case "exit":
+			os.Exit(0)
+		default:
+			fmt.Printf("%s: command not found\n", command)
+		}
+
 	}
 }
