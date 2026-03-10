@@ -15,11 +15,15 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-		command := strings.TrimSpace(line)
+		parts := strings.Split(strings.TrimSpace(line), " ")
+		command := parts[0]
+		args := parts[1:]
 
 		switch command {
 		case "exit":
 			os.Exit(0)
+		case "echo":
+			fmt.Println(strings.Join(args, " "))
 		default:
 			fmt.Printf("%s: command not found\n", command)
 		}
