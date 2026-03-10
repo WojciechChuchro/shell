@@ -39,6 +39,23 @@ script (this is what their test runner uses under the hood):
 ./your_program.sh
 ```
 
+### Example interactions
+
+The shell aims to behave like a typical POSIX shell. For example, the `type`
+builtin should be able to distinguish between external commands and builtins:
+
+```sh
+$ type grep
+grep is /usr/bin/grep
+$ type invalid_command
+invalid_command: not found
+$ type echo
+echo is a shell builtin
+```
+
+As more features are implemented, this section will grow with additional
+examples.
+
 ## Running the Codecrafters tests
 
 If you're viewing this as part of the Codecrafters challenge and have the
@@ -49,8 +66,18 @@ repository with:
 codecrafters submit
 ```
 
-This will run the official tests on Codecrafters' infrastructure and stream the
-results back to your terminal.
+Behind the scenes, the tester will invoke your program with a custom `PATH`
+that looks roughly like this:
+
+```sh
+PATH="/usr/bin:/usr/local/bin:$PATH" ./your_program.sh
+```
+
+This ensures standard binaries like `grep` are available while still giving your
+shell control over how commands are resolved.
+
+The tests themselves run on Codecrafters' infrastructure, and output is streamed
+back to your terminal.
 
 ## Acknowledgements
 

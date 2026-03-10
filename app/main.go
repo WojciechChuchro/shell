@@ -4,11 +4,17 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"strings"
 )
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
+	builtins := map[string]struct{}{
+		"exit": {},
+		"echo": {},
+		"type": {},
+	}
 	for {
 		fmt.Print("$ ")
 		line, err := reader.ReadString('\n')
@@ -16,10 +22,6 @@ func main() {
 			panic(err)
 		}
 		parts := strings.Split(strings.TrimSpace(line), " ")
-		builtins := make(map[string]struct{})
-		builtins["exit"] = struct{}{}
-		builtins["echo"] = struct{}{}
-		builtins["type"] = struct{}{}
 		command := parts[0]
 		args := parts[1:]
 
@@ -32,6 +34,11 @@ func main() {
 			for _, arg := range args {
 				if _, ok := builtins[arg]; ok {
 					fmt.Printf("%s is a shell builtin\n", arg)
+					continue
+				}
+
+				if path, err := exec.LookPath(arg); err == nil {
+					fmt.Printf("%s is %s\n", arg, path)
 				} else {
 					fmt.Printf("%s: not found\n", arg)
 				}
