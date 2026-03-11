@@ -15,6 +15,7 @@ func main() {
 		"echo": {},
 		"type": {},
 		"pwd": {},
+		"cd": {},
 	}
 	for {
 		fmt.Print("$ ")
@@ -36,6 +37,15 @@ func main() {
 				return
 			}
 			fmt.Println(dir)
+		case "cd":
+			if len(args) == 0 {
+				fmt.Println("cd: missing argument")
+				return
+			}
+			err := os.Chdir(args[0])
+			if err != nil {
+				fmt.Printf("cd: %s: No such file or directory\n", args[0])
+			}
 		case "echo":
 			fmt.Println(strings.Join(args, " "))
 		case "type":
@@ -62,6 +72,5 @@ func main() {
 				fmt.Printf("%s: command not found\n", command)
 			}
 		}
-
 	}
 }
