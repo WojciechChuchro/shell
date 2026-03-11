@@ -14,6 +14,7 @@ func main() {
 		"exit": {},
 		"echo": {},
 		"type": {},
+		"pwd": {},
 	}
 	for {
 		fmt.Print("$ ")
@@ -28,6 +29,13 @@ func main() {
 		switch command {
 		case "exit":
 			os.Exit(0)
+		case "pwd":
+			dir, err := os.Getwd()
+			if err != nil {
+				fmt.Println("pwd: error getting current directory")
+				return
+			}
+			fmt.Println(dir)
 		case "echo":
 			fmt.Println(strings.Join(args, " "))
 		case "type":
@@ -44,7 +52,6 @@ func main() {
 				}
 			}
 		default:
-			// External command: reuse LookPath logic, but keep argv[0] as the command name
 			if _, err := exec.LookPath(command); err == nil {
 				cmd := exec.Command(command, args...)
 				cmd.Stdin = os.Stdin
