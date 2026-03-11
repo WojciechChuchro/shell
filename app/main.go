@@ -44,7 +44,16 @@ func main() {
 				}
 			}
 		default:
-			fmt.Printf("%s: command not found\n", command)
+			// External command: reuse LookPath logic, but keep argv[0] as the command name
+			if _, err := exec.LookPath(command); err == nil {
+				cmd := exec.Command(command, args...)
+				cmd.Stdin = os.Stdin
+				cmd.Stdout = os.Stdout
+				cmd.Stderr = os.Stderr
+				_ = cmd.Run()
+			} else {
+				fmt.Printf("%s: command not found\n", command)
+			}
 		}
 
 	}
