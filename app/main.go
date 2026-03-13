@@ -14,8 +14,8 @@ func main() {
 		"exit": {},
 		"echo": {},
 		"type": {},
-		"pwd": {},
-		"cd": {},
+		"pwd":  {},
+		"cd":   {},
 	}
 	for {
 		fmt.Print("$ ")
