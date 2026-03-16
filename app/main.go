@@ -16,6 +16,7 @@ func main() {
 		"type": {},
 		"pwd":  {},
 		"cd":   {},
+		"cat":  {},
 	}
 	for {
 		fmt.Print("$ ")
