@@ -37,6 +37,20 @@ func main() {
 				return
 			}
 			fmt.Println(dir)
+		case "cat":
+			if len(args) == 0 {
+				fmt.Println("cat: missing argument")
+			}
+
+			for _, arg := range args {
+				content, err := os.ReadFile(arg)
+				if err != nil {
+					fmt.Printf("cat: %s: No such file or directory\n", arg)
+					continue
+				}
+				fmt.Println(string(content))
+			}
+
 		case "cd":
 			if len(args) == 0 {
 				fmt.Println("cd: missing argument")
