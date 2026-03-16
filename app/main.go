@@ -42,7 +42,11 @@ func main() {
 				fmt.Println("cd: missing argument")
 				return
 			}
-			err := os.Chdir(args[0])
+			path := args[0]
+			if path == "~" {
+				path = os.Getenv("HOME")
+			}
+			err := os.Chdir(path)
 			if err != nil {
 				fmt.Printf("cd: %s: No such file or directory\n", args[0])
 			}
