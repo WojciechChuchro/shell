@@ -4,6 +4,7 @@ import (
 	"bufio"
 
 	"github.com/codecrafters-io/shell-starter-go/app/command"
+	"github.com/codecrafters-io/shell-starter-go/app/lexer"
 )
 
 type Parser struct {
@@ -11,5 +12,5 @@ type Parser struct {
 }
 
 func (p *Parser) Parse() *command.Command {
-	return nil
+	lexer := lexer.NewLexer(p.reader)
 }
