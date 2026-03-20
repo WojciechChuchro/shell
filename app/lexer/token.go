@@ -8,13 +8,22 @@ const (
 	Word TokenType = iota
 )
 
+func (tt TokenType) String() string {
+	switch tt {
+	case Word:
+		return "Word"
+	default:
+		return fmt.Sprintf("Unknown(%d)", int(tt))
+	}
+}
+
 type Token struct {
 	Type  TokenType
 	Value string
 }
 
 func (t *Token) String() string {
-	return fmt.Sprintf("%x %s", t.Type, t.Value)
+	return fmt.Sprintf("%s %s", t.Type.String(), t.Value)
 }
 
 func NewToken(tokenType TokenType, value string) *Token {

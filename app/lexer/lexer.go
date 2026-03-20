@@ -4,12 +4,12 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"strings"
 	"unicode"
 )
 
 type Lexer struct {
 	Reader bufio.Reader
-	Tokens []Token
 	cur    rune
 	prev   rune
 }
@@ -46,24 +46,23 @@ func (l *Lexer) advance() {
 }
 
 func (l *Lexer) readWord() string {
+	var word strings.Builder
 	if l.cur == '\'' {
 		l.advance()
-		word := ""
 		for l.cur != 0 && l.cur != '\'' {
-			word += string(l.cur)
+			word.WriteRune(l.cur)
 			l.advance()
 		}
 		if l.cur == '\'' {
 			l.advance()
 		}
-		return word
+		return word.String()
 	}
-	word := ""
 	for l.cur != 0 && !unicode.IsSpace(l.cur) {
-		word += string(l.cur)
+		word.WriteRune(l.cur)
 		l.advance()
 	}
-	return word
+	return word.String()
 }
 
 func (l *Lexer) skipWhiteSpace() {
@@ -76,11 +75,11 @@ func NewLexer(reader bufio.Reader) *Lexer {
 	r, _, err := reader.ReadRune()
 	if err != nil {
 		if err == io.EOF {
-			return &Lexer{Reader: reader, Tokens: []Token{}, cur: 0}
+			return &Lexer{Reader: reader, cur: 0}
 		}
 		panic(fmt.Sprintf("error reading first rune: %v", err))
 	}
-	return &Lexer{Reader: reader, Tokens: []Token{}, cur: r}
+	return &Lexer{Reader: reader, cur: r}
 }
 
 func isAlphaNumeric(r rune) bool {
