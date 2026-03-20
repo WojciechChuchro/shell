@@ -1,6 +1,10 @@
 package lexer
 
-import "testing"
+import (
+	"bufio"
+	"strings"
+	"testing"
+)
 
 func assertToken(expected, token Token, t *testing.T) {
 	t.Helper()
@@ -38,19 +42,26 @@ func TestLexer(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		lexer := NewLexer()
 		t.Run(test.name, func(t *testing.T) {
-			tokens, err := lexer.Parse(test.input)
-			if err != nil {
-				t.Fatalf("unexpected error: %v", err)
+			reader := bufio.NewReader(strings.NewReader(test.input))
+			lexer := NewLexer(*reader)
+			makeTokens := func() []*Token {
+				tokens := []*Token{}
+				for {
+					token, err := lexer.NextToken()
+					if err != nil {
+						break
+					}
+					tokens = append(tokens, token)
+				}
+				return tokens
 			}
-
+			tokens := makeTokens()
 			if len(tokens) != len(test.expected) {
 				t.Fatalf("expected %d tokens, got %d", len(test.expected), len(tokens))
 			}
-
 			for i := range tokens {
-				assertToken(test.expected[i], tokens[i], t)
+				assertToken(test.expected[i], *tokens[i], t)
 			}
 		})
 	}
