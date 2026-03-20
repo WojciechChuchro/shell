@@ -57,6 +57,39 @@ func TestLexer(t *testing.T) {
 				{Type: Word, Value: "worldhello"},
 			},
 		},
+		{
+			name:  "double quotes preserve spaces",
+			input: `echo "hello    world"`,
+			expected: []Token{
+				{Type: Word, Value: "echo"},
+				{Type: Word, Value: "hello    world"},
+			},
+		},
+		{
+			name:  "adjacent double quoted strings concatenate",
+			input: `echo "hello""world"`,
+			expected: []Token{
+				{Type: Word, Value: "echo"},
+				{Type: Word, Value: "helloworld"},
+			},
+		},
+		{
+			name:  "separate double quoted arguments",
+			input: `echo "hello" "world"`,
+			expected: []Token{
+				{Type: Word, Value: "echo"},
+				{Type: Word, Value: "hello"},
+				{Type: Word, Value: "world"},
+			},
+		},
+		{
+			name:  "single quote inside double quotes is literal",
+			input: `echo "shell's test"`,
+			expected: []Token{
+				{Type: Word, Value: "echo"},
+				{Type: Word, Value: "shell's test"},
+			},
+		},
 	}
 
 	for _, test := range tests {

@@ -61,6 +61,18 @@ func (l *Lexer) readWord() string {
 			continue
 		}
 
+		if l.cur == '"' {
+			l.advance()
+			for l.cur != 0 && l.cur != '"' {
+				word.WriteRune(l.cur)
+				l.advance()
+			}
+			if l.cur == '"' {
+				l.advance()
+			}
+			continue
+		}
+
 		word.WriteRune(l.cur)
 		l.advance()
 	}
