@@ -39,6 +39,14 @@ func TestLexer(t *testing.T) {
 				{Type: Word, Value: "-la"},
 			},
 		},
+		{
+			name:  "command with quotes",
+			input: "ls 'hello   world'",
+			expected: []Token{
+				{Type: Word, Value: "ls"},
+				{Type: Word, Value: "hello   world"},
+			},
+		},
 	}
 
 	for _, test := range tests {
