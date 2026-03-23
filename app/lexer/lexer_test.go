@@ -47,6 +47,16 @@ func TestLexer(t *testing.T) {
 				{Type: Word, Value: "hello   world"},
 			},
 		},
+		{
+			name:  "concatenated quoted and unquoted fragments",
+			input: "echo 'test     shell' 'example''script' world''hello",
+			expected: []Token{
+				{Type: Word, Value: "echo"},
+				{Type: Word, Value: "test     shell"},
+				{Type: Word, Value: "examplescript"},
+				{Type: Word, Value: "worldhello"},
+			},
+		},
 	}
 
 	for _, test := range tests {

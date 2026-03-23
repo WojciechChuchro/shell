@@ -47,18 +47,20 @@ func (l *Lexer) advance() {
 
 func (l *Lexer) readWord() string {
 	var word strings.Builder
-	if l.cur == '\'' {
-		l.advance()
-		for l.cur != 0 && l.cur != '\'' {
-			word.WriteRune(l.cur)
-			l.advance()
-		}
+
+	for l.cur != 0 && !unicode.IsSpace(l.cur) {
 		if l.cur == '\'' {
 			l.advance()
+			for l.cur != 0 && l.cur != '\'' {
+				word.WriteRune(l.cur)
+				l.advance()
+			}
+			if l.cur == '\'' {
+				l.advance()
+			}
+			continue
 		}
-		return word.String()
-	}
-	for l.cur != 0 && !unicode.IsSpace(l.cur) {
+
 		word.WriteRune(l.cur)
 		l.advance()
 	}
