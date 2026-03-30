@@ -70,8 +70,21 @@ func (l *Lexer) readWord() string {
 		if l.cur == '"' {
 			l.advance()
 			for l.cur != 0 && l.cur != '"' {
+
+				if l.cur == '\\' {
+					l.advance()
+					if l.cur == 0 {
+						break
+					}
+					// Inside double quotes, backslash only escapes \, $, ", and newline.
+					// For other characters, the backslash is kept literally.
+					if l.cur != '\\' && l.cur != '$' && l.cur != '"' && l.cur != '\n' {
+						word.WriteRune('\\')
+					}
+				}
 				word.WriteRune(l.cur)
 				l.advance()
+				continue
 			}
 			if l.cur == '"' {
 				l.advance()

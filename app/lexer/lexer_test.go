@@ -107,6 +107,22 @@ func TestLexer(t *testing.T) {
 				{Type: Word, Value: "spaces"},
 			},
 		},
+		{
+			name:  "escaped double quotes",
+			input: `echo "script'shell'\\'example"`,
+			expected: []Token{
+				{Type: Word, Value: "echo"},
+				{Type: Word, Value: `script'shell'\'example`},
+			},
+		},
+		{
+			name:  "backslash before non-special char in double quotes is preserved",
+			input: `echo "foo\bar"`,
+			expected: []Token{
+				{Type: Word, Value: "echo"},
+				{Type: Word, Value: `foo\bar`},
+			},
+		},
 	}
 
 	for _, test := range tests {
