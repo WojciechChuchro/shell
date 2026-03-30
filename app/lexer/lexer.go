@@ -49,6 +49,12 @@ func (l *Lexer) readWord() string {
 	var word strings.Builder
 
 	for l.cur != 0 && !unicode.IsSpace(l.cur) {
+		if l.cur == '\\' {
+			l.advance()
+			word.WriteRune(l.cur)
+			l.advance()
+			continue
+		}
 		if l.cur == '\'' {
 			l.advance()
 			for l.cur != 0 && l.cur != '\'' {
