@@ -98,6 +98,15 @@ func TestLexer(t *testing.T) {
 				{Type: Word, Value: "three   spaces"},
 			},
 		},
+		{
+			name:  "escaped single quotes",
+			input: `echo three'\\ \\ \\' spaces`,
+			expected: []Token{
+				{Type: Word, Value: "echo"},
+				{Type: Word, Value: `three\\ \\ \\`},
+				{Type: Word, Value: "spaces"},
+			},
+		},
 	}
 
 	for _, test := range tests {
