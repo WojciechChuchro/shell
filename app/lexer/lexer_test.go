@@ -90,6 +90,14 @@ func TestLexer(t *testing.T) {
 				{Type: Word, Value: "shell's test"},
 			},
 		},
+		{
+			name:  "escaped spaces",
+			input: "echo three\\ \\ \\ spaces",
+			expected: []Token{
+				{Type: Word, Value: "echo"},
+				{Type: Word, Value: "three   spaces"},
+			},
+		},
 	}
 
 	for _, test := range tests {
